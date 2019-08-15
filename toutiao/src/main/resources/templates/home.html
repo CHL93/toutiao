@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <th:block th:replace="header :: header" />
+</head>
+<body class="welcome_index">
+
+    <div id="main">
+
+        <div class="container" id="daily">
+            <div class="jscroll-inner">
+                <div class="localVa" >
+                <div class="daily" th:each="vo,voStat:${vos}" th:with="cur_date=${#httpServletRequest.getAttribute('info')}">
+                    <div class="if" th:if="${#dates.format(vo.objs['news'].createdDate,'yyyy-MM-dd')}!=${cur_date}">
+                        <span  th:with="info=${#httpServletRequest.setAttribute('info',#dates.format(vo.objs['news'].createdDate,'yyyy-MM-dd'))}"></span>
+
+                                <h3 class="date">
+                                    <i class="fa icon-calendar"></i>
+                                    头条资讯 <span th:text="${#dates.format(vo.objs['news'].createdDate,'yyyy-MM-dd')}"> </span>
+                                </h3>
+                            </span>
+                    </div>
+
+
+                    <div class="posts">
+
+
+                        <div class="post">
+                            <div class="votebar">
+                                <div>
+                                    <button class="click-like up pressed" data-id="${vo.objs['news'].id}" title="赞同" th:if="${vo.objs['like']>0}">
+                                        <i class="vote-arrow"></i>
+                                        <span class="count" th:text="${vo.objs['news'].likeCount}"></span>
+                                        <a th:href="@{/like/{newsId}(newsId=${vo.objs['news'].id})}" />
+                                    </button>
+                                    <button class="click-like up" data-id="${vo.objs['news'].id}" title="赞同" th:unless="${vo.objs['like']>0}">
+                                        <i class="vote-arrow"></i>
+                                        <a th:href="@{/like/{newsId}(newsId=${vo.objs['news'].id})}" />
+                                        <span class="count" th:text="${vo.objs['news'].likeCount}"></span>
+                                    </button>
+                                    <button class="click-dislike down pressed" data-id="${vo.objs['news'].id}" title="反对" th:if="${vo.objs['like']<0}">
+                                        <a th:href="@{/dislike/{newsId}(newsId=${vo.objs['news'].id})}" />
+                                        <i class="vote-arrow"></i>
+                                    </button>
+                                    <button class="click-dislike down" data-id="${vo.objs['news'].id}" title="反对" th:unless="${vo.objs['like']<0}">
+                                        <a th:href="@{/dislike/{newsId}(newsId=${vo.objs['news'].id})}" />
+                                        <i class="vote-arrow"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="content" data-url="http://nowcoder.com/posts/5l3hjr">
+                                <div >
+                                    <img class="content-img" th:src="${vo.objs['news'].image}" alt="">
+                                </div>
+                                <div class="content-main">
+                                    <h3 class="title">
+                                        <a target="_blank" rel="external nofollow" th:href="@{/home/detail/{newsId}(newsId=${vo.objs['news'].id})}" th:text="${vo.objs['news'].title}"></a>
+                                    </h3>
+                                    <div class="meta" th:text=" ${vo.objs['news'].link}">
+
+                                        <span th:text="${vo.objs['news'].commentCount}">
+                                            <i class="fa icon-comment"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <a  href="/user/${vo.objs['user'].id}/"><img width="32" class="img-circle" th:src="${vo.objs['user'].headUrl}"></a>
+                                </div>
+
+
+                            </div>
+
+                            <div class="subject-name">来自 <a  href="/user/${vo.objs['user'].id}/" th:text="${vo.objs['user'].name}"></a></div>
+                        </div>
+
+                    <!--#if ($foreach.count == $vos.size()) ##最后有个元素要收尾-->
+                    </div>
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<div th:replace="footer :: common_foot" ></div>
+  <script>
+  </script>
+
+
+</body>
+</html>

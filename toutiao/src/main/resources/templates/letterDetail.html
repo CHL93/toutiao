@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <th:block th:replace="header :: header" />
+</head>
+<body class="welcome_index">
+    <div id="main">
+        <div class="container">
+            <ul class="letter-chatlist" th:each="message,messageSta :${messageList}">
+
+                <li id="msg-item-4009580">
+                    <a class="list-head">
+                        <img alt="头像" th:src="${message.objs['fromUser'].headUrl}">
+                    </a>
+                    <div class="tooltip fade right in">
+                        <div class="tooltip-arrow"></div>
+                            <div class="letter-info">
+                                <div class="tooltip-inner letter-chat clearfix">
+                                    <!--${#dates.format(message.objs['message'].createdDate,'yyyy-MM-dd HH:mm:ss')}-->
+                                    <p class="letter-time" th:text="${#dates.format(message.objs['message'].createdDate,'yyyy-MM-dd HH:mm:ss')}"></p>
+                                    <p class="chat-content" th:text="${message.objs['message'].content}">
+                            </div>
+                                <a href="javascript:void(0);" id="del-link" name="4009580">删除</a>
+
+                            </p>
+                        </div>
+                    </div>
+                </li>
+
+</ul>
+
+        </div>
+        <script type="text/javascript">
+          $(function(){
+
+            // If really is weixin
+            $(document).on('WeixinJSBridgeReady', function() {
+
+              $('.weixin-qrcode-dropdown').show();
+
+              var options = {
+                "img_url": "",
+                "link": "http://nowcoder.com/j/wt2rwy",
+                "desc": "",
+                "title": "读《Web 全栈工程师的自我修养》"
+              };
+
+              WeixinJSBridge.on('menu:share:appmessage', function (argv){
+                WeixinJSBridge.invoke('sendAppMessage', options, function (res) {
+                  // _report('send_msg', res.err_msg)
+                });
+              });
+
+              WeixinJSBridge.on('menu:share:timeline', function (argv) {
+                WeixinJSBridge.invoke('shareTimeline', options, function (res) {
+                  // _report('send_msg', res.err_msg)
+                });
+              });
+
+              // $(window).on('touchmove scroll', function() {
+              //   if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+              //     $('div.backdrop').show();
+              //     $('div.share-help').show();
+              //   } else {
+              //     $('div.backdrop').hide();
+              //     $('div.share-help').hide();
+              //   }
+              // });
+
+            });
+
+          })
+        </script>
+    </div>
+
+    <div th:replace="footer :: common_foot" ></div>
+    <script>
+    </script>
+
+
+</body>
+</html>

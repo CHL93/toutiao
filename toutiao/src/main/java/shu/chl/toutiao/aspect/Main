@@ -1,0 +1,66 @@
+package shu.chl.toutiao.aspect;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+
+public class Main{
+
+    public static String solution(int[] A, int[] B){
+        int pre = 0;
+        Integer target = null;
+        Integer next = null;
+        Integer index = -1;
+        for(int i=0; i<A.length-1; i++){
+            if(A[i] >= A[i+1]){
+                index = i+1;
+                pre = A[i];
+                target = A[i+1];
+                if(i != A.length-2)
+                    next = A[i+2];
+            }
+        }
+        Integer result = Integer.MIN_VALUE;
+        if(next != null){
+            for(int temp:B)
+                if(temp>pre && temp<next)
+                    result = Math.max(result, temp);
+        }else{
+            for(int temp:B)
+                if(temp>pre)
+                    result = Math.max(result, temp);
+        }
+        if(result == Integer.MIN_VALUE)
+            return "NO";
+        else{
+            A[index] = result;
+            String r = "";
+            for(int i=0; i<A.length; i++)
+                if(i == A.length-1)
+                    r += String.valueOf(A[i]);
+                else
+                    r = r + String.valueOf(A[i]) + " ";
+            return r;
+        }
+
+    }
+
+
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        while(scanner.hasNextLine()){
+            String[] A = new String[100];
+            String[] B = new String[100];
+            A = scanner.nextLine().split(" ");
+            B = scanner.nextLine().split(" ");
+            int[] tempA = new int[A.length];
+            int[] tempB = new int[B.length];
+            for(int i=0; i<A.length; i++)
+                tempA[i] = Integer.valueOf(A[i]);
+
+            for(int i=0; i<B.length; i++)
+                tempB[i] = Integer.valueOf(B[i]);
+            System.out.println(solution(tempA, tempB));
+        }
+    }
+}
